@@ -3,6 +3,7 @@ package com.mycompany.EXCEPTIONMAPPER;
 import com.mycompany.EXCEPTION.IllegalRestRequestException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.ApplicationException;
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -10,6 +11,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
+@ApplicationException
 public class IllegalRestRequestExceptionMapper implements ExceptionMapper<IllegalRestRequestException>{
 
     @Inject

@@ -2,7 +2,8 @@ package com.mycompany.testDTO;
 
 import com.mycompany.DTO.UserDTO;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -16,7 +17,7 @@ public class TestUserDTO {
     public void userNameNotNull(){
         UserDTO user = new UserDTO(null, "ASDasd123", "Balázs", "Borján");
         
-        notZeroViolations(user);
+        notZeroViolations(user, null);
     }
     
     @Test
@@ -28,9 +29,11 @@ public class TestUserDTO {
     
     @Test
     public void userNameSizeMinThree(){
-        UserDTO user = new UserDTO("ba", "ASDasd123", "Balázs", "Borján");
+        String usrnm = "ba";
         
-        notZeroViolations(user);
+        UserDTO user = new UserDTO(usrnm, "ASDasd123", "Balázs", "Borján");
+        
+        notZeroViolations(user, usrnm);
     }
     
     @Test
@@ -41,16 +44,10 @@ public class TestUserDTO {
     }
     
     @Test
-    public void passwordNotNullAndNotMachPattern(){
+    public void passwordNotNull(){
         UserDTO user = new UserDTO("balazsborjan", null, "Balázs", "Borján");
         
-        ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
-        Validator validator = vf.getValidator();
-        vf.close();
-        
-        Set<ConstraintViolation<UserDTO>> violations = validator.validate(user);
-        Assert.assertEquals(2, violations.size());
-        //A regexes pattern vizsgálat miatt nem 1, hanem 2 hibát észlel a validátor, ezért ezt a 2 esetet egyben vizsgáltatom
+        notZeroViolations(user, null);
     }
     
     @Test
@@ -61,10 +58,26 @@ public class TestUserDTO {
     }
     
     @Test
-    public void passwordSizeMinSix(){
-        UserDTO user = new UserDTO("balazsborjan", "Pwd1", "Balázs", "Borján");
+    public void passwordMatxhPattern(){
+        String pwd = "ASD123";
+        UserDTO user = new UserDTO("balazsborjan", pwd, "Balázs", "Borján");
         
-        notZeroViolations(user);
+        notZeroViolations(user, pwd);
+    }
+    
+    @Test
+    public void passwordShouldMatchPattern(){
+        UserDTO user = new UserDTO("balazsborjan", "ASDasd123", "Balázs", "Borján");
+        
+        zeroViolations(user);
+    }
+    
+    @Test
+    public void passwordSizeMinSix(){
+        String pwd = "Pwd1";
+        UserDTO user = new UserDTO("balazsborjan", pwd, "Balázs", "Borján");
+        
+        notZeroViolations(user, pwd);
     }
     
     @Test
@@ -72,20 +85,6 @@ public class TestUserDTO {
         UserDTO user = new UserDTO("balazsborjan", "Paswd1", "Balázs", "Borján");
         
         zeroViolations(user);
-    }
-    
-    @Test
-    public void passwordMatchIsValidPasswordvalidation(){
-        UserDTO user = new UserDTO("balazsborjan", "Password1", "Balázs", "Borján");
-        
-        zeroViolations(user);
-    }
-    
-    @Test
-    public void passwordShouldMatchIsValidPasswordValidation(){
-        UserDTO user = new UserDTO("balazsborjan", "PASSWORD1", "Balázs", "Borján");
-        
-        notZeroViolations(user);
     }
     
     @Test
@@ -98,9 +97,10 @@ public class TestUserDTO {
     
     @Test
     public void dateOfBirthShouldMatchIsValidDateOfBirth(){
-        UserDTO user = new UserDTO("balazsborjan", "Paswd1", "Balázs", "Borján", LocalDate.of(2030, 01, 01));
+        String dateOfBirth = "2020-01-01";
+        UserDTO user = new UserDTO("balazsborjan", "Paswd1", "Balázs", "Borján", LocalDate.parse(dateOfBirth));
         
-        notZeroViolations(user);
+        notZeroViolations(user, user);
     }
     
     private static void zeroViolations(UserDTO user){
@@ -108,16 +108,17 @@ public class TestUserDTO {
         Validator validator = vf.getValidator();
         vf.close();
         
-        Set<ConstraintViolation<UserDTO>> violations = validator.validate(user);
+        List<ConstraintViolation<UserDTO>> violations = new ArrayList(validator.validate(user));
         Assert.assertEquals(0, violations.size());
     }
     
-    private static void notZeroViolations(UserDTO user){
+    private static void notZeroViolations(UserDTO user, Object wrongParam){        
         ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
         Validator validator = vf.getValidator();
         vf.close();
         
-        Set<ConstraintViolation<UserDTO>> violations = validator.validate(user);
+        List<ConstraintViolation<UserDTO>> violations = new ArrayList(validator.validate(user));
         Assert.assertEquals(1, violations.size());
+        Assert.assertEquals(wrongParam,violations.get(0).getInvalidValue());
     }
 }

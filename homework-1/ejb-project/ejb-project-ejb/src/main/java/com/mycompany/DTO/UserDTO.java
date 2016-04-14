@@ -2,13 +2,13 @@ package com.mycompany.DTO;
 
 import com.mycompany.INTERCEPTORS.ValidateDTO;
 import com.mycompany.VALIDATION.IsValidDateOfBirth;
-import com.mycompany.VALIDATION.IsValidPassword;
 import com.mycompany.dateadapter.LocalDateAdapter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -18,7 +18,7 @@ public class UserDTO {
 
     @NotNull @Size(min = 3)
     private String userName;    
-    @NotNull @Size(min = 6) @IsValidPassword
+    @NotNull @Size(min = 6) @Pattern(regexp = "((([A-Z]+)([a-z]+)([A-Z]*)([a-z]*))(([1-9]+)|([=+<>.,]+)))|((([a-z]+)([A-Z]+)([a-z]*)([A-Z]*))(([1-9]+)|([=+<>.,]+)))")
     private String password;
     private String firstname;
     private String lastname;

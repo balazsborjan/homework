@@ -9,13 +9,13 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.ConcurrencyManagement;
 import javax.ejb.ConcurrencyManagementType;
-import javax.ejb.LocalBean;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 @Singleton
 @Startup
-@LocalBean
 @ConcurrencyManagement(ConcurrencyManagementType.BEAN)
 public class UserManagementService {
 
@@ -27,6 +27,7 @@ public class UserManagementService {
         users.add(new UserDTO("user", "user", "Firstname", "Lastname", LocalDate.of(2016, Month.APRIL, 10)));
     }
     
+    @Lock(LockType.WRITE)
     public UserDTO addUser(UserDTO newUser){
         for (UserDTO user : users) {
             if (user.getUserName().equals(newUser.getUserName())) {
@@ -41,6 +42,7 @@ public class UserManagementService {
         return newUser;
     }
     
+    @Lock(LockType.WRITE)
     public UserDTO removeUser(String userName, String password){
         UserDTO deletedUser;
         for (UserDTO user : users) {
@@ -54,6 +56,7 @@ public class UserManagementService {
         throw new IllegalRestRequestException("There is no User with this username or password!");
     }
     
+    @Lock(LockType.WRITE)
     public UserDTO editUser(String userName, String password, UserDTO editedUser){
         for (UserDTO user : users) {
             if (user.getUserName().equals(userName) && user.getPassword().equals(password)) {
@@ -73,6 +76,7 @@ public class UserManagementService {
         throw new IllegalRestRequestException("There is no User with this username or password!");
     }
     
+    @Lock(LockType.READ)
     public UserDTO getUser(String userName){
         for (UserDTO user : users) {
             if (user.getUserName().equals(userName)) {
@@ -83,6 +87,7 @@ public class UserManagementService {
         throw new IllegalRestRequestException("There is no User with this username!");
     }
     
+    @Lock(LockType.READ)
     public UserDTO getUser(UserDTO user){
         for (UserDTO u : users) {
             if (u.equals(user)) {
@@ -93,6 +98,7 @@ public class UserManagementService {
         throw new IllegalRestRequestException("There is no User with these parameters!");
     }
     
+    @Lock(LockType.READ)
     public List<UserDTO> getUsers(){
         return users;
     }

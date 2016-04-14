@@ -4,7 +4,7 @@ import com.mycompany.DTO.UserDTO;
 import com.mycompany.EXCEPTION.IllegalRestRequestException;
 import com.mycompany.INTERCEPTORS.ValidatorInterceptor;
 import com.mycompany.SERVICE.UserManagementService;
-import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +27,8 @@ public class UserRESTService {
     private UserManagementService userManagement;
     
     @GET
-    public ArrayList<UserDTO> getUsers(){
-        return (ArrayList)userManagement.getUsers();
+    public List<UserDTO> getUsers(){
+        return userManagement.getUsers();
     }
     
     @GET

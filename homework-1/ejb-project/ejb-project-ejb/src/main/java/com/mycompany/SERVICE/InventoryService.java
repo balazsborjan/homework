@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
-import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 @Singleton
 @Startup
-@LocalBean
 public class InventoryService {
 
     private final List<MobileDTO> mobiles = new ArrayList<>();

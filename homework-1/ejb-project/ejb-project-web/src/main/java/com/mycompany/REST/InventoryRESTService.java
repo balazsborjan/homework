@@ -5,7 +5,7 @@ import com.mycompany.DTO.UserDTO;
 import com.mycompany.EXCEPTION.IllegalRestRequestException;
 import com.mycompany.SERVICE.InventoryService;
 import com.mycompany.SERVICE.UserManagementService;
-import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,17 +28,15 @@ public class InventoryRESTService {
     private UserManagementService userService;
     
     @GET
-    public ArrayList<MobileDTO> getMobiles(){
-        return (ArrayList)inventory.getMobiles();
+    public List<MobileDTO> getMobiles(){
+        return inventory.getMobiles();
     }
     
     @POST
     @Path("/addMobile")
     @Consumes("application/json")
-    //@Interceptors(ValidatorInterceptor.class)
     public MobileDTO addMobile(@Context HttpServletRequest request, MobileDTO mobile){
         HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(3000);
         
         Object loggedInUser = session.getAttribute("user");
         if ((UserDTO)loggedInUser == null || !userService.getUser((UserDTO)loggedInUser).getAdmin()) {

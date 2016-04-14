@@ -36,16 +36,15 @@ public class CartRESTService implements Serializable {
     private UserManagementService userService;
     
     @GET
-    public ArrayList<MobileDTO> getRecentProducts(@Context HttpServletRequest request) {
+    public List<MobileDTO> getRecentProducts(@Context HttpServletRequest request) {
         HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(3000);
         
         Object loggedInUserCheck = session.getAttribute("user");        
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
             session.invalidate();            
             throw new IllegalRestRequestException("Invalid request, User did not logged in!");
         }else{
-            return (ArrayList)cartService.getProducts();
+            return cartService.getProducts();
         }
     }
     
@@ -53,7 +52,6 @@ public class CartRESTService implements Serializable {
     @Path("/getProduct/{id}")
     public MobileDTO getProductById(@Context HttpServletRequest request, @PathParam("id") String id){
         HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(3000);
         
         Object loggedInUserCheck = session.getAttribute("user");
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
@@ -70,7 +68,6 @@ public class CartRESTService implements Serializable {
     @Produces("text/plain")
     public String buyAllProducts(@Context HttpServletRequest request){
         HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(3000);
         
         Object loggedInUserCheck = session.getAttribute("user");
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
@@ -86,7 +83,6 @@ public class CartRESTService implements Serializable {
     @Path("/addProduct/{id}")
     public MobileDTO addProduct(@Context HttpServletRequest request, @PathParam("id") String id){
         HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(3000);
         
         Object loggedInUserCheck = session.getAttribute("user");
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
@@ -102,7 +98,6 @@ public class CartRESTService implements Serializable {
     @Path("/deleteProduct/{id}")
     public MobileDTO deleteProduct(@Context HttpServletRequest request, @PathParam("id") String id){
         HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(3000);
         
         Object loggedInUserCheck = session.getAttribute("user");
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
@@ -116,9 +111,8 @@ public class CartRESTService implements Serializable {
     
     @POST
     @Path("/checkout")
-    public ArrayList<MobileDTO> checkout(@Context HttpServletRequest request){
+    public List<MobileDTO> checkout(@Context HttpServletRequest request){
         HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(3000);
         
         Object loggedInUserCheck = session.getAttribute("user");
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
@@ -129,7 +123,7 @@ public class CartRESTService implements Serializable {
             List<MobileDTO> returnList = cartService.getProducts();
             cartService.checkout();
             request.getSession().invalidate();
-            return (ArrayList)returnList;
+            return returnList;
         }
     }
 }

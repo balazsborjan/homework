@@ -4,13 +4,11 @@ import com.mycompany.DTO.MobileDTO;
 import com.mycompany.EXCEPTION.IllegalRestRequestException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.LocalBean;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 
 @Stateful
-@LocalBean
 public class CartService {
 
     @Inject
@@ -39,18 +37,13 @@ public class CartService {
                     mobile.setPiece(mobile.getPiece() - 1);
                     
                     for (MobileDTO product : products) {
-                        if (product.getId().equals(id)) {
-                            product.setPiece(product.getPiece() + 1);
+                        if (newProductIsInTheCartYet(product, id)) {
                             return product;
                         }
                     }
                     
                     MobileDTO newMobile = new MobileDTO();
-                    newMobile.setId(mobile.getId());
-                    newMobile.setManufacturer(mobile.getManufacturer());
-                    newMobile.setPiece(1);
-                    newMobile.setPrice(mobile.getPrice());
-                    newMobile.setType(mobile.getType());
+                    setUpNewMobile(mobile, newMobile);
                     
                     products.add(newMobile);
                     return newMobile;
@@ -95,4 +88,28 @@ public class CartService {
         
         products.clear();
     }
+    
+    private boolean newProductIsInTheCartYet(MobileDTO product, String id){
+        if (product.getId().equals(id)) {
+                product.setPiece(product.getPiece() + 1);
+                return true;
+            }
+        
+        return false;
+    }
+    
+    private void setUpNewMobile(MobileDTO mobile, MobileDTO newMobile){
+        newMobile.setId(mobile.getId());
+        newMobile.setManufacturer(mobile.getManufacturer());
+        newMobile.setPiece(1);
+        newMobile.setPrice(mobile.getPrice());
+        newMobile.setType(mobile.getType());
+    }
+    
+    /*for (MobileDTO product : products) {
+                        if (product.getId().equals(id)) {
+                            product.setPiece(product.getPiece() + 1);
+                            return product;
+                        }
+                    }*/
 }

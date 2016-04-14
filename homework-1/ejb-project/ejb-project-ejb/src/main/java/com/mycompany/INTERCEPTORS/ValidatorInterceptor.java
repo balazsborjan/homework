@@ -19,22 +19,26 @@ public class ValidatorInterceptor {
     
     @AroundInvoke
     public Object userValidation(InvocationContext ic) throws Exception{
-        String errorMessage;
         Object[] objects = ic.getParameters();
         
         for (Object param : objects) {
             if (param.getClass().isAnnotationPresent(ValidateDTO.class)) {
-                Set<ConstraintViolation<Object>> violations = validator.validate(param);
-                if (!violations.isEmpty()) {
-                    errorMessage = violations.stream().map(v -> "Error in Validation! Message: "
-                            + v.getMessage() + "at: "
-                            + v.getPropertyPath().toString()).reduce(String::concat).toString();
-                    
-                    throw new IllegalValidationException(errorMessage);
-                }
+                validation(param);
             }
         }
         
         return ic.proceed();
+    }
+    
+    private void validation(Object param){
+        String errorMessage;
+        Set<ConstraintViolation<Object>> violations = validator.validate(param);
+        if (!violations.isEmpty()) {
+            errorMessage = violations.stream().map(v -> "Error in Validation! Message: " 
+                    + v.getMessage() + "at: "
+                    + v.getPropertyPath().toString()).reduce(String::concat).toString();
+                    
+            throw new IllegalValidationException(errorMessage);
+        }
     }
 }
