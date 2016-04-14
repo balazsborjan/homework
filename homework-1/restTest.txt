@@ -1,0 +1,75 @@
+UserRESTService:
+GET: Get users:
+	http://localhost:8080/ejb-project-web/webshop/users
+
+GET: Get 1 user by username:
+	http://localhost:8080/ejb-project-web/webshop/users/admin
+
+POST: Add 1 user to users list:
+	http://localhost:8080/ejb-project-web/webshop/users/addUser
+	{
+		"firstname": "balazs",
+		"lastname": "borjan",
+		"password": "Belepek1",
+		"userName": "bborjan",
+		"registrationDate": "2016-04-13",
+		"dateOfBirth": "1993-11-01"
+	}
+
+DELETE: delete 1 user from users list:
+	http://localhost:8080/ejb-project-web/webshop/users/deleteUser/user/user
+
+PUT: edit 1 user (elõzõ hozzáadás után a hozzáadott user módosítása):
+	http://localhost:8080/ejb-project-web/webshop/users/editUser/bborjan/Belepek1	
+	{
+	  "firstname": "balazs",
+	  "lastname": "borjan",
+	  "password": "Belepek12",
+	  "userName": "bbalazs",
+	  "registrationDate": "2016-04-13",
+	  "dateOfBirth": "1994-11-01"
+	}
+
+POST login (elõzõ edit user után):
+	http://localhost:8080/ejb-project-web/webshop/users/login/bbalazs/Belepek12
+POST logout:
+	http://localhost:8080/ejb-project-web/webshop/users/logout
+
+InventoryRESTService:
+GET mobiles:
+	http://localhost:8080/ejb-project-web/webshop/mobiles
+
+POST add 1 mobile to mobiles list:
+	need to log in as administrator:
+	http://localhost:8080/ejb-project-web/webshop/users/login/admin/admin
+	http://localhost:8080/ejb-project-web/webshop/mobiles/addMobile
+	{
+  		"type": "iPhone 7s",
+	  	"manufacturer": "Apple",
+  		"price": 4000,
+  		"piece": 2
+	}
+
+CartRESTService:
+POST add 1 product to cart (after login):
+	get the mobiles list from inventory:
+	(GET)http://localhost:8080/ejb-project-web/webshop/mobiles (Select a product id)
+	http://localhost:8080/ejb-project-web/webshop/cart/addProduct/<SELECTED_ID>
+	add 1 piece to cart and decrease the amount of the product in the inventory
+
+GET products:
+	http://localhost:8080/ejb-project-web/webshop/cart
+
+GET 1 product by id:
+	http://localhost:8080/ejb-project-web/webshop/cart/getProduct/<SELECTED_ID>
+
+DELETE 1 product from the cart:
+	http://localhost:8080/ejb-project-web/webshop/cart/deleteProduct/<SELECTED_ID>
+	increase the amount of the product in the inventory
+
+GET buy all products from from cart:
+	http://localhost:8080/ejb-project-web/webshop/cart/buyProducts
+
+POST checkout (if user logged in):
+	http://localhost:8080/ejb-project-web/webshop/cart/checkout
+	take back all the products from cart to the inventory
