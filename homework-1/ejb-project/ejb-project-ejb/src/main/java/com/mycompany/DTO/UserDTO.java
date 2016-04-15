@@ -1,7 +1,7 @@
-package com.mycompany.DTO;
+package com.mycompany.dto;
 
-import com.mycompany.INTERCEPTORS.ValidateDTO;
-import com.mycompany.VALIDATION.IsValidDateOfBirth;
+import com.mycompany.interceptors.ValidateDTO;
+import com.mycompany.validations.IsValidDateOfBirth;
 import com.mycompany.dateadapter.LocalDateAdapter;
 import java.time.LocalDate;
 import java.util.ArrayList;

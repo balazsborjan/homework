@@ -1,4 +1,4 @@
-package com.mycompany.INTERCEPTORS;
+package com.mycompany.interceptors;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

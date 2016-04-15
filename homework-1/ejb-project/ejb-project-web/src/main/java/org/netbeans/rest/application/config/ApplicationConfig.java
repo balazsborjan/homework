@@ -20,12 +20,12 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.mycompany.EXCEPTIONMAPPER.GeneralExceptionMapper.class);
-        resources.add(com.mycompany.EXCEPTIONMAPPER.IllegalRestRequestExceptionMapper.class);
-        resources.add(com.mycompany.EXCEPTIONMAPPER.IllegalValidationExceptionMapper.class);
-        resources.add(com.mycompany.REST.CartRESTService.class);
-        resources.add(com.mycompany.REST.InventoryRESTService.class);
-        resources.add(com.mycompany.REST.UserRESTService.class);
+        resources.add(com.mycompany.exceptionmappers.GeneralExceptionMapper.class);
+        resources.add(com.mycompany.exceptionmappers.IllegalRestRequestExceptionMapper.class);
+        resources.add(com.mycompany.exceptionmappers.IllegalValidationExceptionMapper.class);
+        resources.add(com.mycompany.rest.CartRESTService.class);
+        resources.add(com.mycompany.rest.InventoryRESTService.class);
+        resources.add(com.mycompany.rest.UserRESTService.class);
     }
 
 }

@@ -1,10 +1,10 @@
-package com.mycompany.REST;
+package com.mycompany.rest;
 
-import com.mycompany.DTO.MobileDTO;
-import com.mycompany.DTO.UserDTO;
-import com.mycompany.EXCEPTION.IllegalRestRequestException;
-import com.mycompany.SERVICE.InventoryService;
-import com.mycompany.SERVICE.UserManagementService;
+import com.mycompany.dto.MobileDTO;
+import com.mycompany.dto.UserDTO;
+import com.mycompany.exceptions.IllegalRestRequestException;
+import com.mycompany.services.InventoryService;
+import com.mycompany.services.UserManagementService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;

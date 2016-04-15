@@ -1,6 +1,6 @@
-package com.mycompany.DTO;
+package com.mycompany.dto;
 
-import com.mycompany.INTERCEPTORS.ValidateDTO;
+import com.mycompany.interceptors.ValidateDTO;
 import java.util.Objects;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

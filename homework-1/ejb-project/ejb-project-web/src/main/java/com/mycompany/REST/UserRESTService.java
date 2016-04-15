@@ -1,9 +1,9 @@
-package com.mycompany.REST;
+package com.mycompany.rest;
 
-import com.mycompany.DTO.UserDTO;
-import com.mycompany.EXCEPTION.IllegalRestRequestException;
-import com.mycompany.INTERCEPTORS.ValidatorInterceptor;
-import com.mycompany.SERVICE.UserManagementService;
+import com.mycompany.dto.UserDTO;
+import com.mycompany.exceptions.IllegalRestRequestException;
+import com.mycompany.interceptors.ValidatorInterceptor;
+import com.mycompany.services.UserManagementService;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.interceptor.Interceptors;

@@ -1,6 +1,6 @@
-package com.mycompany.INTERCEPTORS;
+package com.mycompany.interceptors;
 
-import com.mycompany.EXCEPTION.IllegalValidationException;
+import com.mycompany.exceptions.IllegalValidationException;
 import com.mycompany.annotation.ValidatorQualifier;
 import java.util.Set;
 import javax.inject.Inject;
@@ -23,14 +23,14 @@ public class ValidatorInterceptor {
         
         for (Object param : objects) {
             if (param.getClass().isAnnotationPresent(ValidateDTO.class)) {
-                validation(param);
+                validateParam(param);
             }
         }
         
         return ic.proceed();
     }
     
-    private void validation(Object param){
+    private void validateParam(Object param){
         String errorMessage;
         Set<ConstraintViolation<Object>> violations = validator.validate(param);
         if (!violations.isEmpty()) {
