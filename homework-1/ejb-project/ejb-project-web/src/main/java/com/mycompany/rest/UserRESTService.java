@@ -26,6 +26,8 @@ public class UserRESTService {
     @EJB
     private UserManagementService userManagement;
     
+    private static final String USER_SESSION_ATTRIBUTE = "USER";
+    
     @GET
     public List<UserDTO> getUsers(){
         return userManagement.getUsers();
@@ -46,7 +48,7 @@ public class UserRESTService {
         for (UserDTO acceptedUser : userManagement.getUsers()) {
             if (acceptedUser.getUserName().equals(userName) && acceptedUser.getPassword().equals(password)) {
                 session.setMaxInactiveInterval(3000);
-                session.setAttribute("user", acceptedUser);
+                session.setAttribute(USER_SESSION_ATTRIBUTE, acceptedUser);
                 return acceptedUser;
             }
         }

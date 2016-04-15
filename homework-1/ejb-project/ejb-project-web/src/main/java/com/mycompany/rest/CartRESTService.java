@@ -35,14 +35,17 @@ public class CartRESTService implements Serializable {
     @Inject
     private UserManagementService userService;
     
+    private static final String LOGIN_FAIL = "Invalid request, User did not logged in!";
+    private static final String USER_SESSION_ATTRIBUTE = "USER";
+    
     @GET
     public List<MobileDTO> getRecentProducts(@Context HttpServletRequest request) {
         HttpSession session = request.getSession();
         
-        Object loggedInUserCheck = session.getAttribute("user");        
+        Object loggedInUserCheck = session.getAttribute(USER_SESSION_ATTRIBUTE);        
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
             session.invalidate();            
-            throw new IllegalRestRequestException("Invalid request, User did not logged in!");
+            throw new IllegalRestRequestException(LOGIN_FAIL);
         }else{
             return cartService.getProducts();
         }
@@ -53,11 +56,11 @@ public class CartRESTService implements Serializable {
     public MobileDTO getProductById(@Context HttpServletRequest request, @PathParam("id") String id){
         HttpSession session = request.getSession();
         
-        Object loggedInUserCheck = session.getAttribute("user");
+        Object loggedInUserCheck = session.getAttribute(USER_SESSION_ATTRIBUTE);
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
             session.invalidate();
             
-            throw new IllegalRestRequestException("Invalid request, User did not logged in!");
+            throw new IllegalRestRequestException(LOGIN_FAIL);
         }else{
             return cartService.getProductById(id);
         }
@@ -69,11 +72,11 @@ public class CartRESTService implements Serializable {
     public String buyAllProducts(@Context HttpServletRequest request){
         HttpSession session = request.getSession();
         
-        Object loggedInUserCheck = session.getAttribute("user");
+        Object loggedInUserCheck = session.getAttribute(USER_SESSION_ATTRIBUTE);
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
             session.invalidate();
             
-            throw new IllegalRestRequestException("Invalid request, User did not logged in!");
+            throw new IllegalRestRequestException(LOGIN_FAIL);
         }else{
             return cartService.buyAllProducts();
         }
@@ -84,11 +87,11 @@ public class CartRESTService implements Serializable {
     public MobileDTO addProduct(@Context HttpServletRequest request, @PathParam("id") String id){
         HttpSession session = request.getSession();
         
-        Object loggedInUserCheck = session.getAttribute("user");
+        Object loggedInUserCheck = session.getAttribute(USER_SESSION_ATTRIBUTE);
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
             session.invalidate();
             
-            throw new IllegalRestRequestException("Invalid request, User did not logged in!");
+            throw new IllegalRestRequestException(LOGIN_FAIL);
         }else{
             return cartService.addProduct(id);
         }
@@ -99,11 +102,11 @@ public class CartRESTService implements Serializable {
     public MobileDTO deleteProduct(@Context HttpServletRequest request, @PathParam("id") String id){
         HttpSession session = request.getSession();
         
-        Object loggedInUserCheck = session.getAttribute("user");
+        Object loggedInUserCheck = session.getAttribute(USER_SESSION_ATTRIBUTE);
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
             session.invalidate();
             
-            throw new IllegalRestRequestException("Invalid request, User did not logged in!");
+            throw new IllegalRestRequestException(LOGIN_FAIL);
         }else{
             return cartService.deleteProduct(id);
         }
@@ -114,11 +117,11 @@ public class CartRESTService implements Serializable {
     public List<MobileDTO> checkout(@Context HttpServletRequest request){
         HttpSession session = request.getSession();
         
-        Object loggedInUserCheck = session.getAttribute("user");
+        Object loggedInUserCheck = session.getAttribute(USER_SESSION_ATTRIBUTE);
         if (loggedInUserCheck == null || userService.getUser((UserDTO)loggedInUserCheck) == null) {
             session.invalidate();
             
-            throw new IllegalRestRequestException("Invalid request, User did not logged in!");
+            throw new IllegalRestRequestException(LOGIN_FAIL);
         }else{
             List<MobileDTO> returnList = cartService.getProducts();
             cartService.checkout();

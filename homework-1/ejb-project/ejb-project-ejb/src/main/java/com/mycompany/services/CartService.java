@@ -16,6 +16,9 @@ public class CartService implements Serializable{
     private InventoryService inventory;
     
     private final List<MobileDTO> products = new ArrayList<>();
+    private static final String NO_MORE_PRODUCT = "There isn't enough available products!";
+    private static final String INVALID_ID = "Invalid ID!";
+    
 
     public ArrayList<MobileDTO> getProducts() {
         return (ArrayList)products;
@@ -28,43 +31,33 @@ public class CartService implements Serializable{
             }
         }
         
-        throw new IllegalRestRequestException("There is no product in the cart with an ID like this!");
+        throw new IllegalRestRequestException(INVALID_ID);
     }
     
     public MobileDTO addProduct(String id) {
         for(MobileDTO mobile : inventory.getMobiles()){
             if (mobile.getId().equals(id)) {
                 if (mobile.getPiece() > 0) {
-                    mobile.setPiece(mobile.getPiece() - 1);
-                    
-                    for (MobileDTO product : products) {
-                        if (newProductIsInTheCartYet(product, id)) {
-                            return product;
-                        }
-                    }
-                    
-                    setUpNewMobile(mobile);
+                    return newProductIsInTheCartYet(id, mobile);
                 }
                 
-                throw new IllegalRestRequestException("There is no more available piece from this product!");
+                throw new IllegalRestRequestException(NO_MORE_PRODUCT);
             }
         }
         
-        throw new IllegalRestRequestException("There is no product in the cart with an ID like this!");
+        throw new IllegalRestRequestException(INVALID_ID);
     }
     
     public MobileDTO deleteProduct(String id){
-        MobileDTO deleteMobile;
         for(MobileDTO mobile : products){
             if (mobile.getId().equals(id)) {
-                inventory.addMobile(mobile);
-                deleteMobile = mobile;
-                products.remove(mobile);
-                return deleteMobile;
+                MobileDTO deleteMobile = mobile;
+                products.remove(mobile);                
+                return inventory.addMobile(deleteMobile);
             }
         }
         
-        throw new IllegalRestRequestException("There is no product in the cart with an ID like this!");
+        throw new IllegalRestRequestException(INVALID_ID);
     }
     
     public String buyAllProducts(){
@@ -86,13 +79,17 @@ public class CartService implements Serializable{
         products.clear();
     }
     
-    private boolean newProductIsInTheCartYet(MobileDTO product, String id){
-        if (product.getId().equals(id)) {
-                product.setPiece(product.getPiece() + 1);
-                return true;
-            }
+    private MobileDTO newProductIsInTheCartYet(String id, MobileDTO actMobile){
+        actMobile.setPiece(actMobile.getPiece() - 1);
         
-        return false;
+        for (MobileDTO product : products) {
+            if (product.getId().equals(id)) {
+                product.setPiece(product.getPiece() + 1);
+                return product;
+            }
+        }
+        
+        return setUpNewMobile(actMobile);
     }
     
     private MobileDTO setUpNewMobile(MobileDTO mobile){
