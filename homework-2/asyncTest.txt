@@ -1,2 +1,21 @@
+POST:
+http://localhost:8080/async-demo-web/asyncdemo/rest/async1
+{
+"id": 1,
+"amount": 1
+}
+elindít egy függvnyt, amely 20 másodpercig várakoztat, ekõzben:
+
 GET:
 http://localhost:8080/async-demo-web/asyncdemo/rest
+	kiolvassa egy lista méretét, az async1 még mindig várakoztat, eközben:
+POST:
+http://localhost:8080/async-demo-web/asyncdemo/rest/async2
+	hozzáad 1 elemet az elõbb kiolvasott listához, ezután:
+GET:
+http://localhost:8080/async-demo-web/asyncdemo/rest
+	a kiolvasott lista hossza már 1
+20 másodperc lejárta után:
+GET:
+http://localhost:8080/async-demo-web/asyncdemo/rest
+	a kiolvasott lista hossza már az async1-re hívott függvény következtében 11
