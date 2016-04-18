@@ -19,13 +19,11 @@ public class AsyncService {
     private final List<AsyncDTO> dtoList = new ArrayList<>();
  
     @Asynchronous
-    public void longAsyncMethod(AsyncDTO dto) throws InterruptedException 
-    {   
+    public void longAsyncMethod(AsyncDTO dto) throws InterruptedException {   
         Thread.sleep(20000);
         dtoList.add(dto);
         
-        for (int i = 0; i < 10; i++) 
-        {
+        for (int i = 0; i < 10; i++) {
             AsyncDTO newDto = new AsyncDTO();
             newDto.setId(dto.getId()+ i);
             newDto.setAmount(i);
